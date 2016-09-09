@@ -7,8 +7,12 @@ import {NavController} from 'ionic-angular';
 
 export class HomePage {
 
+  framework: string
+  
   constructor(private navCtrl: NavController) {
-
+    this.framework = 'Ionic Framework'
   }
 
 }
+
+
