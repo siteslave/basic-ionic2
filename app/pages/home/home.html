@@ -5,13 +5,47 @@
 </ion-header>
 
 <ion-content padding class="home">
-  <h2>Welcome to Ionic!</h2>
-  <p>
-    This starter project comes with simple tabs-based layout for apps
-    that are going to primarily use a Tabbed UI.
-  </p>
-  <p>
-    Take a look at the <code>app/</code> directory to add or change tabs,
-    update any existing page or create new pages.
-  </p>
+ <ion-list>
+  <ion-item>
+    <ion-label>แผนกหลัก</ion-label>
+    <ion-select [(ngModel)]="mainDep" (ionChange)="getSubDepartments()" required>
+      <ion-option *ngFor="let d of mainDepartments" [value]="d.id">
+        {{d.name}}
+      </ion-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label>แผนกย่อย</ion-label>
+    <ion-select [(ngModel)]="subDep" multiple="true" required>
+      <ion-option *ngFor="let d of subDepartments" [value]="d.id">
+        {{d.name}}
+      </ion-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <button (click)="showSelected()" [disabled]="!mainDep || !subDep">Show Selected</button>
+  </ion-item>
+</ion-list>
+
+<ion-list>
+  <ion-list-header>อาหารที่ชอบ</ion-list-header>
+  <ion-item>
+    <ion-label>โค้ก/เป็บซี่</ion-label>
+    <ion-checkbox [(ngModel)]="coke" danger></ion-checkbox>
+  </ion-item>
+  <ion-item>
+    <ion-label>ไข่เจียว</ion-label>
+    <ion-checkbox [(ngModel)]="egg" secondary></ion-checkbox>
+  </ion-item>
+  <ion-item>
+    <ion-label>พิชซ่า</ion-label>
+    <ion-checkbox [(ngModel)]="pizza"></ion-checkbox>
+  </ion-item>
+  <ion-item>
+      <ion-item>
+    <button (click)="showSelectedFood()">Show Selected</button>
+  </ion-item>
+  </ion-item>
+</ion-list>
+  
 </ion-content>
