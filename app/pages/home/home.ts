@@ -11,4 +11,10 @@ export class HomePage {
 
   }
 
+  sayHello() {
+    let name: string = 'Ionic framework!'
+    alert(name);
+  }
+
 }
+
