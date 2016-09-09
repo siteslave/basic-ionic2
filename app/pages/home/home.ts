@@ -1,5 +1,7 @@
 import {Component} from '@angular/core';
-import {NavController} from 'ionic-angular';
+import {NavController, ModalController} from 'ionic-angular';
+
+import {InfoModalPage} from '../info-modal/info-modal';
 
 @Component({
   templateUrl: 'build/pages/home/home.html'
@@ -7,8 +9,13 @@ import {NavController} from 'ionic-angular';
 
 export class HomePage {
 
-  constructor(private navCtrl: NavController) {
+  constructor(private navCtrl: NavController, private modalCtrl: ModalController) {
 
+  }
+
+  showInfo() {
+    let modal = this.modalCtrl.create(InfoModalPage)
+    modal.present()
   }
 
 }
