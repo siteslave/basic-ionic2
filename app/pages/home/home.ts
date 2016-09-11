@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-import {NavController, SqlStorage, Storage, ModalController, ToastController} from 'ionic-angular';
-
+import {NavController, Platform, ModalController, ToastController} from 'ionic-angular';
+import {SQLite} from 'ionic-native'
 
 import {ModalNewPage} from '../modal-new/modal-new'
 import {ModalEditPage} from '../modal-edit/modal-edit'
@@ -10,21 +10,29 @@ import {ModalEditPage} from '../modal-edit/modal-edit'
 })
 
 export class HomePage {
-  private storage: Storage
+  db: SQLite
   personList: Array<Object>
 
-  constructor(private navCtrl: NavController, private toastCtrl: ToastController) {
-    this.storage = new Storage(SqlStorage)
-    this.storage.query(`
-    CREATE TABLE IF NOT EXISTS
-    people (id INTEGER PRIMARY KEY AUTOINCREMENT, firstname TEXT, lastname TEXT)
-    `);
+  constructor(private platform: Platform, private navCtrl: NavController, private toastCtrl: ToastController) {
+    this.db = new SQLite()
+    this.db.openDatabase({
+      name: 'data.db',
+      location: 'default'
+    }).then(() => {
+    }, error => {
+      console.log(error)
+    });
 
-    this.personList = []
+    // this.storage.query(`
+    // CREATE TABLE IF NOT EXISTS
+    // people (id INTEGER PRIMARY KEY AUTOINCREMENT, firstname TEXT, lastname TEXT)
+    // `);
+
+    // this.personList = []
   }
 
   add() {
-    this.storage.query("INSERT INTO people (firstname, lastname) VALUES (?, ?)", ["Nic", "Raboy"]).then((data) => {
+    this.db.executeSql("INSERT INTO people (firstname, lastname) VALUES (?, ?)", ["Nic", "Raboy"]).then((data) => {
       this.personList.push({
         "firstname": "Nic",
         "lastname": "Raboy"
@@ -35,19 +43,20 @@ export class HomePage {
   }
 
   getList() {
-    this.storage.query('SELECT * FROM people')
+    this.db.executeSql('SELECT * FROM people', [])
       .then(data => {
-        console.log(data.res.rows.item(1))
-        if (data.res.rows.length > 0) {
-          console.log(data.res.rows)
+        console.log(data.rows)
+        if (data.rows.length > 0) {
           this.personList = [];
-          for (let i = 0; i < data.res.rows.length; i++) {
+          for (let i = 0; i < data.rows.length; i++) {
             this.personList.push({
-              id: data.res.rows.item(i).id,
-              firstname: data.res.rows.item(i).firstname,
-              lastname: data.res.rows.item(i).lastname
+              id: data.rows.item(i).id,
+              firstname: data.rows.item(i).firstname,
+              lastname: data.rows.item(i).lastname
             });
           }
+
+          console.log(this.personList)
         }
       }, err => {
         console.log(err)
@@ -63,7 +72,7 @@ export class HomePage {
   }
 
   doRemove(id: number) {
-    this.storage.query('DELETE FROM people WHERE id=?', [id])
+    this.db.executeSql('DELETE FROM people WHERE id=?', [id])
       .then(() => {
         this.getList()
         let toast = this.toastCtrl.create({
