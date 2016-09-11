@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Storage, SqlStorage, ToastController } from 'ionic-angular';
+import { NavController, NavParams, ToastController } from 'ionic-angular';
+
+import {SQLite} from 'ionic-native'
 
 @Component({
   templateUrl: 'build/pages/modal-edit/modal-edit.html',
@@ -8,18 +10,26 @@ export class ModalEditPage {
   id: number
   firstname: string
   lastname: string
-  private storage: Storage
+  db: SQLite
 
   constructor(private navCtrl: NavController, private navParams: NavParams, private toastCtrl: ToastController) {
     this.id = this.navParams.get('id')
     this.firstname = this.navParams.get('firstname')
     this.lastname = this.navParams.get('lastname')
-    this.storage = new Storage(SqlStorage)
+    
+    this.db = new SQLite()
+    this.db.openDatabase({
+      name: 'data.db',
+      location: 'default'
+    }).then(() => {
+    }, error => {
+      console.log(error)
+    })
   }
 
   save() {
     let sql = 'UPDATE people set firstname=?, lastname=? WHERE id=?'
-    this.storage.query(sql, [this.firstname, this.lastname, this.id])
+    this.db.executeSql(sql, [this.firstname, this.lastname, this.id])
       .then(() => {
         let toast = this.toastCtrl.create({
           message: 'Person was added successfully',
