@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {NavController, SqlStorage, Storage, ModalController, ToastController} from 'ionic-angular';
 
-
+// import page 
 import {ModalNewPage} from '../modal-new/modal-new'
 import {ModalEditPage} from '../modal-edit/modal-edit'
 
