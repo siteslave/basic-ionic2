@@ -12,21 +12,21 @@
 <ion-content padding class="home">
   <ion-list>
     <ion-list-header>Person list</ion-list-header>
-  <ion-item-sliding *ngFor="let e of personList">
-    <ion-item>
-      <h2>{{ e.firstname }} {{ e.lastname }}</h2>
-    </ion-item>
-    <ion-item-options side="right">
-      <button danger (click)="doRemove(e.id)">
-        <ion-icon name="trash"></ion-icon>
-        DELETE
-      </button>
-      <button secondary (click)="edit(e)">
-        <ion-icon name="create"></ion-icon>
-        EDIT
-      </button>
-    </ion-item-options>
-  </ion-item-sliding>
+    <ion-item-sliding *ngFor="let e of personList">
+      <ion-item>
+        <h2>{{ e.firstname }} {{ e.lastname }}</h2>
+      </ion-item>
+      <ion-item-options side="right">
+        <button danger (click)="doRemove(e.id)">
+          <ion-icon name="trash"></ion-icon>
+          DELETE
+        </button>
+        <button secondary (click)="edit(e)">
+          <ion-icon name="create"></ion-icon>
+          EDIT
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
   </ion-list>
-
 </ion-content>
+

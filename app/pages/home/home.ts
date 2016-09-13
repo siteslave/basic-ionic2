@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NavController, Platform, ModalController, ToastController} from 'ionic-angular';
+import {NavController, ToastController} from 'ionic-angular';
 import {SQLite} from 'ionic-native'
 
 import {ModalNewPage} from '../modal-new/modal-new'
@@ -13,7 +13,7 @@ export class HomePage {
   db: SQLite
   personList: Array<Object>
 
-  constructor(private platform: Platform, private navCtrl: NavController, private toastCtrl: ToastController) {
+  constructor(private navCtrl: NavController, private toastCtrl: ToastController) {
     this.db = new SQLite()
     this.db.openDatabase({
       name: 'data.db',
@@ -22,32 +22,13 @@ export class HomePage {
     }, error => {
       console.log(error)
     });
-
-    // this.storage.query(`
-    // CREATE TABLE IF NOT EXISTS
-    // people (id INTEGER PRIMARY KEY AUTOINCREMENT, firstname TEXT, lastname TEXT)
-    // `);
-
-    // this.personList = []
-  }
-
-  add() {
-    this.db.executeSql("INSERT INTO people (firstname, lastname) VALUES (?, ?)", ["Nic", "Raboy"]).then((data) => {
-      this.personList.push({
-        "firstname": "Nic",
-        "lastname": "Raboy"
-      });
-    }, (error) => {
-      console.log(error);
-    });
   }
 
   getList() {
+    this.personList = [];
     this.db.executeSql('SELECT * FROM people', [])
       .then(data => {
-        console.log(data.rows)
         if (data.rows.length > 0) {
-          this.personList = [];
           for (let i = 0; i < data.rows.length; i++) {
             this.personList.push({
               id: data.rows.item(i).id,

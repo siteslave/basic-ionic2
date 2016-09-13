@@ -12,7 +12,8 @@ export class ModalEditPage {
   lastname: string
   db: SQLite
 
-  constructor(private navCtrl: NavController, private navParams: NavParams, private toastCtrl: ToastController) {
+  constructor(private navCtrl: NavController, private navParams: NavParams,
+    private toastCtrl: ToastController) {
     this.id = this.navParams.get('id')
     this.firstname = this.navParams.get('firstname')
     this.lastname = this.navParams.get('lastname')
