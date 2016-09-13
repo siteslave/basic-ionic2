@@ -23,11 +23,16 @@ export class MyApp {
         name: 'data.db',
         location: 'default'
       }).then(() => {
-        db.executeSql(`CREATE TABLE IF NOT EXISTS 
+        let sql1 = `CREATE TABLE IF NOT EXISTS 
         people (id INTEGER PRIMARY KEY AUTOINCREMENT,
-        firstname TEXT, lastname TEXT)`, {})
-          .then((data) => {
-          console.log("TABLE CREATED: ", data);
+        firstname TEXT, lastname TEXT)`;
+        let sql2 = `CREATE TABLE IF NOT EXISTS 
+        users (id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT, password TEXT)`;
+        
+        db.sqlBatch([sql1, sql2])
+          .then(() => {
+          console.log("TABLE CREATED");
         }, (error) => {
           console.error("Unable to execute sql", error);
         });
